@@ -43,6 +43,15 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0a0a1f">
 
+<!-- Set tema sebelum halaman dirender, supaya tidak kedip (flash) warna salah saat load -->
+<script>
+  (function(){
+    var saved = localStorage.getItem('traivy-theme');
+    var theme = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -50,12 +59,17 @@
 <style>
   :root{
     --bg: #0a0a1f;
+    --bg-rgb: 10,10,31;
     --bg-soft: #12122e;
     --card: #14152f;
     --card-border: rgba(255,255,255,0.08);
     --ink: #f4f2fb;
     --muted: #9a97c2;
     --muted-dim: #6f6c98;
+    --blob-opacity: 0.55;
+    --hover-border: rgba(255,255,255,0.18);
+    --hover-border-soft: rgba(255,255,255,0.2);
+    --hover-border-ghost: rgba(255,255,255,0.25);
 
     --pink: #ff6ec7;
     --violet: #8b6bff;
@@ -70,6 +84,31 @@
     --radius-sm: 12px;
 
     --maxw: 1180px;
+
+    color-scheme: dark;
+  }
+
+  [data-theme="light"]{
+    --bg: #f6f5fb;
+    --bg-rgb: 246,245,251;
+    --bg-soft: #ffffff;
+    --card: #ffffff;
+    --card-border: rgba(20,15,50,0.09);
+    --ink: #16152e;
+    --muted: #615f80;
+    --muted-dim: #8b89a3;
+    --blob-opacity: 0.28;
+    --hover-border: rgba(20,15,50,0.18);
+    --hover-border-soft: rgba(20,15,50,0.2);
+    --hover-border-ghost: rgba(20,15,50,0.22);
+    --gradient-soft: linear-gradient(120deg, rgba(255,110,199,0.14), rgba(91,140,255,0.14) 55%, rgba(47,230,201,0.14));
+
+    color-scheme: light;
+  }
+
+  body, header, .service-card, .chip, .portfolio-card, .testi-empty, .faq-item,
+  .about-visual, footer, .btn-ghost{
+    transition: background-color .3s ease, border-color .3s ease, color .3s ease;
   }
 
   *{ box-sizing: border-box; }
@@ -134,7 +173,7 @@
     position: absolute;
     border-radius: 50%;
     filter: blur(90px);
-    opacity: 0.55;
+    opacity: var(--blob-opacity);
     pointer-events: none;
     z-index: 0;
   }
@@ -153,7 +192,7 @@
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(10,10,31,0.75);
+    background: rgba(var(--bg-rgb), 0.75);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--card-border);
   }
@@ -208,9 +247,37 @@
     border-color: var(--card-border);
     color: var(--ink);
   }
-  .btn-ghost:hover{ border-color: rgba(255,255,255,0.25); }
+  .btn-ghost:hover{ border-color: var(--hover-border-ghost); }
 
   .nav-cta{ display:flex; align-items:center; gap:14px; }
+
+  .theme-toggle{
+    position: relative;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 1px solid var(--card-border);
+    background: var(--card);
+    color: var(--ink);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color .25s ease, background-color .25s ease, transform .2s ease;
+  }
+  .theme-toggle:hover{ border-color: var(--hover-border); transform: translateY(-2px); }
+  .theme-toggle:focus-visible{ outline: 2px solid var(--teal); outline-offset: 3px; }
+  .theme-toggle svg{
+    width: 20px;
+    height: 20px;
+    stroke: url(#theme-toggle-gradient);
+  }
+  .theme-toggle .icon-moon{ display: block; }
+  .theme-toggle .icon-sun{ display: none; }
+  [data-theme="light"] .theme-toggle .icon-moon{ display: none; }
+  [data-theme="light"] .theme-toggle .icon-sun{ display: block; }
+
   .menu-toggle{
     display:none;
     background:none;
@@ -332,7 +399,7 @@
     transition: border-color .25s ease, transform .25s ease;
   }
   .service-card:hover{
-    border-color: rgba(255,255,255,0.18);
+    border-color: var(--hover-border);
     transform: translateY(-4px);
   }
   .service-card::before{
@@ -448,7 +515,7 @@
     color: var(--muted);
     transition: color .2s ease, border-color .2s ease;
   }
-  .chip:hover{ color: var(--ink); border-color: rgba(255,255,255,0.2); }
+  .chip:hover{ color: var(--ink); border-color: var(--hover-border-soft); }
   .chip.hi{
     background: var(--gradient);
     color: #0a0a1f;
@@ -615,6 +682,20 @@
       <!-- GANTI: WHATSAPP -->
       <a class="btn btn-ghost" href="https://instagram.com/traivycreation" target="_blank" rel="noopener">DM Instagram</a>
       <a class="btn btn-primary" href="#kontak">Konsultasi Gratis</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Ganti tema gelap/terang">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+        <svg width="0" height="0" style="position:absolute">
+          <defs>
+            <linearGradient id="theme-toggle-gradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#ff6ec7"/>
+              <stop offset="45%" stop-color="#8b6bff"/>
+              <stop offset="70%" stop-color="#5b8cff"/>
+              <stop offset="100%" stop-color="#2fe6c9"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </button>
       <button class="menu-toggle" aria-label="Buka menu">☰</button>
     </div>
   </nav>
@@ -881,10 +962,22 @@
     const isOpen = navLinks.style.display === 'flex';
     navLinks.style.cssText = isOpen
       ? ''
-      : 'display:flex; position:absolute; top:100%; left:0; right:0; flex-direction:column; gap:0; background:#0a0a1f; padding:12px 28px; border-bottom:1px solid rgba(255,255,255,0.08);';
+      : 'display:flex; position:absolute; top:100%; left:0; right:0; flex-direction:column; gap:0; background:var(--bg); padding:12px 28px; border-bottom:1px solid var(--card-border);';
     if(!isOpen){
       navLinks.querySelectorAll('a').forEach(a => a.style.padding = '14px 0');
     }
+  });
+
+  // Theme toggle (gelap/terang)
+  const themeToggle = document.getElementById('themeToggle');
+  const htmlEl = document.documentElement;
+  const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+  themeToggle.addEventListener('click', () => {
+    const current = htmlEl.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    const next = current === 'light' ? 'dark' : 'light';
+    htmlEl.setAttribute('data-theme', next);
+    localStorage.setItem('traivy-theme', next);
+    if(themeColorMeta) themeColorMeta.setAttribute('content', next === 'light' ? '#f6f5fb' : '#0a0a1f');
   });
 
   // FAQ accordion
