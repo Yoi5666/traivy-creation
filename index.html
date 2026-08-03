@@ -6,7 +6,7 @@
 <title>Traivy Creation — Studio Kreatif Digital</title>
 <meta name="description" content="Traivy Creation menyediakan jasa desain grafis, video editing, dan social media management untuk UMKM, brand, dan personal brand di seluruh Indonesia.">
 
-<!-- Open Graph / share preview (WhatsApp, Instagram, Facebook, dll) -->
+<!-- Open Graph / share preview -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://traivycreation.my.id/">
 <meta property="og:title" content="Traivy Creation — Studio Kreatif Digital">
@@ -91,11 +91,6 @@
     --gradient-soft: linear-gradient(120deg, rgba(255,110,199,0.14), rgba(91,140,255,0.14) 55%, rgba(47,230,201,0.14));
 
     color-scheme: light;
-  }
-
-  body, header, .service-card, .chip, .portfolio-card, .testi-empty, .faq-item,
-  .about-visual, footer, .btn-ghost{
-    transition: background-color .3s ease, border-color .3s ease, color .3s ease;
   }
 
   *{ box-sizing: border-box; }
@@ -192,37 +187,47 @@
     justify-content: space-between;
   }
   
-  /* LOGO GAMBAR */
-  .logo-img {
+  /* ===== LOGO dengan GAMBAR PNG ===== */
+  .logo-wrapper {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    text-decoration: none;
   }
-  .logo-img img {
+  
+  .logo-img {
     height: 48px;
     width: auto;
     object-fit: contain;
-    transition: filter 0.3s ease;
+    border-radius: 10px;
+    transition: transform 0.3s ease, filter 0.3s ease;
   }
-  /* Filter untuk mode terang agar logo tetap terlihat */
-  [data-theme="light"] .logo-img img {
-    filter: brightness(0.8) contrast(1.2);
+  .logo-wrapper:hover .logo-img {
+    transform: scale(1.05);
   }
-  .logo-img .logo-text {
+  
+  .logo-text {
     font-family: 'Bricolage Grotesque', sans-serif;
     font-weight: 800;
     font-size: 22px;
     color: var(--ink);
+    line-height: 1;
   }
-  .logo-img .logo-text span {
+  .logo-text span {
     font-weight: 400;
-    opacity: 0.8;
+    opacity: 0.7;
   }
+  
+  /* Mode terang - logo tetap terlihat */
+  [data-theme="light"] .logo-img {
+    filter: brightness(0.9) contrast(1.1);
+  }
+  
   @media (max-width: 480px) {
-    .logo-img img {
+    .logo-img {
       height: 36px;
     }
-    .logo-img .logo-text {
+    .logo-text {
       font-size: 18px;
     }
   }
@@ -479,13 +484,14 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    padding: 30px;
   }
-  .about-visual img {
-    width: 70%;
-    height: 70%;
+  .about-visual .about-logo {
+    width: 80%;
+    height: 80%;
     object-fit: contain;
     z-index: 1;
-    border-radius: 20px;
+    border-radius: 16px;
   }
   .about-visual::after{
     content:"";
@@ -496,6 +502,16 @@
     filter: blur(80px);
     opacity: .5;
     top: -40px; right: -40px;
+  }
+  .about-visual::before{
+    content:"";
+    position:absolute;
+    width: 180px; height: 180px;
+    background: var(--blue);
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: .4;
+    bottom: -40px; left: -40px;
   }
 
   .keunggulan{ margin-top: 28px; }
@@ -664,11 +680,14 @@
     gap: 32px;
     padding-bottom: 40px;
   }
-  .footer-brand .logo-img {
+  .footer-brand .logo-wrapper {
     margin-bottom: 12px;
   }
-  .footer-brand .logo-img img {
-    height: 44px;
+  .footer-brand .logo-img {
+    height: 40px;
+  }
+  .footer-brand .logo-text {
+    font-size: 20px;
   }
   .footer-brand p{ color: var(--muted); max-width: 320px; margin-top: 12px; font-size: 14.5px; }
   .footer-links{ display: flex; gap: 60px; flex-wrap: wrap; }
@@ -693,10 +712,9 @@
 
 <header>
   <nav>
-    <!-- LOGO dengan GAMBAR -->
-    <a href="#top" class="logo-img">
-      <!-- GANTI: pastikan file "full logo.PNG" berada di folder yang sama dengan index.html -->
-      <img src="full logo.PNG" alt="Traivy Creation Logo">
+    <!-- LOGO dengan FILE PNG "logo-trairy.png" -->
+    <a href="#top" class="logo-wrapper">
+      <img src="logo-trairy.png" alt="Traivy Creation Logo" class="logo-img">
       <span class="logo-text">Traivy<span> Creation</span></span>
     </a>
     <ul class="nav-links">
@@ -836,8 +854,7 @@
         </ul>
       </div>
       <div class="about-visual reveal">
-        <!-- Logo di bagian About -->
-        <img src="full logo.PNG" alt="Traivy Creation">
+        <img src="logo-trairy.png" alt="Traivy Creation" class="about-logo">
       </div>
     </div>
   </section>
@@ -947,8 +964,8 @@
   <div class="wrap">
     <div class="footer-top">
       <div class="footer-brand">
-        <a href="#top" class="logo-img">
-          <img src="full logo.PNG" alt="Traivy Creation Logo">
+        <a href="#top" class="logo-wrapper">
+          <img src="logo-trairy.png" alt="Traivy Creation Logo" class="logo-img">
           <span class="logo-text">Traivy<span> Creation</span></span>
         </a>
         <p>Studio kreatif digital untuk desain grafis, video editing, dan social media management — melayani seluruh Indonesia.</p>
