@@ -7,7 +7,6 @@
 <meta name="description" content="Traivy Creation menyediakan jasa desain grafis, video editing, dan social media management untuk UMKM, brand, dan personal brand di seluruh Indonesia.">
 
 <!-- Open Graph / share preview (WhatsApp, Instagram, Facebook, dll) -->
-<!-- GANTI: OG-URL — sesuaikan og:url, og:image, twitter:image kalau domain berubah -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://traivycreation.my.id/">
 <meta property="og:title" content="Traivy Creation — Studio Kreatif Digital">
@@ -24,18 +23,7 @@
 <meta name="twitter:description" content="Jasa desain grafis, video editing, dan social media management untuk UMKM, brand, dan personal brand di seluruh Indonesia.">
 <meta name="twitter:image" content="https://traivycreation.my.id/og-image.png">
 
-<!--
-  CATATAN UNTUK PEMILIK WEBSITE (Traivy Creation):
-  Bagian yang masih placeholder dan perlu diganti begitu datanya siap:
-  1. Nomor WhatsApp  -> cari komentar "GANTI: WHATSAPP"
-  2. Email bisnis     -> cari komentar "GANTI: EMAIL"
-  3. Contoh portofolio-> cari komentar "GANTI: PORTOFOLIO" (masih berupa kartu "segera hadir")
-  4. Testimoni klien  -> cari komentar "GANTI: TESTIMONI"
-  5. Favicon          -> cari komentar "GANTI: FAVICON" (saat ini pakai monogram "T" sementara, ganti dengan logo asli kalau sudah siap). File PNG-nya (favicon-16x16.png, favicon-32x32.png, apple-touch-icon.png, android-chrome-*.png, favicon.ico, site.webmanifest) harus diupload ke folder root domain, sejajar dengan file index.html ini.
-  6. OG image (preview link di WA/IG/FB) -> file "og-image.png" (1200x630) harus diupload ke root domain juga. Kalau domain bukan traivycreation.my.id, cari "GANTI: OG-URL" di bawah dan sesuaikan.
--->
-
-<!-- GANTI: FAVICON — file-file ini (favicon-16x16.png, favicon-32x32.png, apple-touch-icon.png, favicon.ico, site.webmanifest) sudah disertakan terpisah, upload ke root domain lalu ganti dengan logo asli kalau sudah siap -->
+<!-- Favicon -->
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -43,7 +31,6 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0a0a1f">
 
-<!-- Set tema sebelum halaman dirender, supaya tidak kedip (flash) warna salah saat load -->
 <script>
   (function(){
     var saved = localStorage.getItem('traivy-theme');
@@ -168,7 +155,7 @@
     color: transparent;
   }
 
-  /* ambient gradient blobs -- signature element echoing the logo's blurred backdrop */
+  /* ambient gradient blobs */
   .blob{
     position: absolute;
     border-radius: 50%;
@@ -199,17 +186,47 @@
   nav{
     max-width: var(--maxw);
     margin: 0 auto;
-    padding: 16px 28px;
+    padding: 12px 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
-  .logo{
+  
+  /* LOGO GAMBAR */
+  .logo-img {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-img img {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+    transition: filter 0.3s ease;
+  }
+  /* Filter untuk mode terang agar logo tetap terlihat */
+  [data-theme="light"] .logo-img img {
+    filter: brightness(0.8) contrast(1.2);
+  }
+  .logo-img .logo-text {
     font-family: 'Bricolage Grotesque', sans-serif;
     font-weight: 800;
     font-size: 22px;
+    color: var(--ink);
   }
-  .logo span{ font-weight: 400; opacity: 0.8; }
+  .logo-img .logo-text span {
+    font-weight: 400;
+    opacity: 0.8;
+  }
+  @media (max-width: 480px) {
+    .logo-img img {
+      height: 36px;
+    }
+    .logo-img .logo-text {
+      font-size: 18px;
+    }
+  }
+
   .nav-links{
     display: flex;
     gap: 32px;
@@ -463,6 +480,13 @@
     justify-content: center;
     overflow: hidden;
   }
+  .about-visual img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+    z-index: 1;
+    border-radius: 20px;
+  }
   .about-visual::after{
     content:"";
     position:absolute;
@@ -473,14 +497,6 @@
     opacity: .5;
     top: -40px; right: -40px;
   }
-  .about-visual .word{
-    font-family:'Bricolage Grotesque', sans-serif;
-    font-weight: 800;
-    font-size: 15vw;
-    max-font-size: 90px;
-    z-index: 1;
-  }
-  .about-visual .word{ font-size: clamp(48px, 8vw, 90px); }
 
   .keunggulan{ margin-top: 28px; }
   .keunggulan li{
@@ -648,6 +664,12 @@
     gap: 32px;
     padding-bottom: 40px;
   }
+  .footer-brand .logo-img {
+    margin-bottom: 12px;
+  }
+  .footer-brand .logo-img img {
+    height: 44px;
+  }
   .footer-brand p{ color: var(--muted); max-width: 320px; margin-top: 12px; font-size: 14.5px; }
   .footer-links{ display: flex; gap: 60px; flex-wrap: wrap; }
   .footer-links h4{ font-size: 13px; color: var(--muted-dim); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 16px; font-family: 'JetBrains Mono', monospace; font-weight: 500; }
@@ -671,7 +693,12 @@
 
 <header>
   <nav>
-    <a href="#top" class="logo">Traivy<span> Creation</span></a>
+    <!-- LOGO dengan GAMBAR -->
+    <a href="#top" class="logo-img">
+      <!-- GANTI: pastikan file "full logo.PNG" berada di folder yang sama dengan index.html -->
+      <img src="full logo.PNG" alt="Traivy Creation Logo">
+      <span class="logo-text">Traivy<span> Creation</span></span>
+    </a>
     <ul class="nav-links">
       <li><a href="#layanan">Layanan</a></li>
       <li><a href="#tentang">Tentang</a></li>
@@ -679,7 +706,6 @@
       <li><a href="#faq">FAQ</a></li>
     </ul>
     <div class="nav-cta">
-      <!-- GANTI: WHATSAPP -->
       <a class="btn btn-ghost" href="https://instagram.com/traivycreation" target="_blank" rel="noopener">DM Instagram</a>
       <a class="btn btn-primary" href="#kontak">Konsultasi Gratis</a>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Ganti tema gelap/terang">
@@ -810,7 +836,8 @@
         </ul>
       </div>
       <div class="about-visual reveal">
-        <span class="word gradient-text">T!</span>
+        <!-- Logo di bagian About -->
+        <img src="full logo.PNG" alt="Traivy Creation">
       </div>
     </div>
   </section>
@@ -838,7 +865,6 @@
   </section>
 
   <!-- ============ PORTOFOLIO (placeholder) ============ -->
-  <!-- GANTI: PORTOFOLIO -->
   <section id="portofolio">
     <div class="wrap">
       <div class="section-head reveal">
@@ -858,7 +884,6 @@
   </section>
 
   <!-- ============ TESTIMONI (placeholder) ============ -->
-  <!-- GANTI: TESTIMONI -->
   <section id="testimoni">
     <div class="wrap">
       <div class="section-head reveal">
@@ -881,10 +906,8 @@
           <p>Ceritakan kebutuhanmu, kami bantu wujudkan lewat desain, video, dan strategi konten yang tepat.</p>
         </div>
         <div style="display:flex; gap:14px; flex-wrap:wrap;">
-          <!-- GANTI: WHATSAPP -->
           <a class="btn btn-primary" href="https://instagram.com/traivycreation" target="_blank" rel="noopener">Chat via Instagram</a>
           <a class="btn btn-ghost" href="mailto:hello@traivycreation.com">Kirim Email</a>
-          <!-- GANTI: EMAIL di atas masih placeholder -->
         </div>
       </div>
     </div>
@@ -924,7 +947,10 @@
   <div class="wrap">
     <div class="footer-top">
       <div class="footer-brand">
-        <a href="#top" class="logo">Traivy<span> Creation</span></a>
+        <a href="#top" class="logo-img">
+          <img src="full logo.PNG" alt="Traivy Creation Logo">
+          <span class="logo-text">Traivy<span> Creation</span></span>
+        </a>
         <p>Studio kreatif digital untuk desain grafis, video editing, dan social media management — melayani seluruh Indonesia.</p>
       </div>
       <div class="footer-links">
@@ -941,7 +967,6 @@
           <h4>Kontak</h4>
           <ul>
             <li><a href="https://instagram.com/traivycreation" target="_blank" rel="noopener">@traivycreation</a></li>
-            <!-- GANTI: EMAIL & WHATSAPP -->
             <li><a href="mailto:hello@traivycreation.com">Email</a></li>
           </ul>
         </div>
